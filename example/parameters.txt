@@ -1,0 +1,4 @@
+otufile	plugins/Krona/example/otus.txt
+mapping	plugins/Krona/example/mapping.txt
+tree	plugins/Krona/example/rep_set.tre
+column	Description

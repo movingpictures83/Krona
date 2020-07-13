@@ -1,0 +1,2 @@
+Prefix plugins/Krona/example
+Plugin Krona inputfile parameters.txt outputfile HMP-krona
