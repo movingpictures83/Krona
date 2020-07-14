@@ -1,4 +1,4 @@
-# NetRep
+# Krona
 # Language: R
 # Input: TXT
 # Output: PREFIX
