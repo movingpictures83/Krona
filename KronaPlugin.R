@@ -1,3 +1,4 @@
+library(microbiome)
 #library(SpiecEasi)
 #library(ggplot2)
 library(phyloseq)
@@ -49,23 +50,24 @@ input <- function(inputfile) {
   parameters <<- read.table(inputfile, as.is=T);
   rownames(parameters) <<- parameters[,1]; 
    # Need to get the three files
-   otu.path <- parameters["otufile", 2]
-   tree.path <- parameters["tree", 2]
-   map.path <- parameters["mapping", 2]
+   otu.path <<- parameters["otufile", 2]
+   tree.path <<- parameters["tree", 2]
+   map.path <<- parameters["mapping", 2]
    diffcol <<- parameters["column", 2]
    print(otu.path)
    print(tree.path)
    print(map.path)
-   HMP <<- import_qiime(otu.path, map.path, tree.path, parseFunction = parse_taxonomy_qiime)
+   #HMP <<- import_qiime(otu.path, map.path, tree.path, parseFunction = parse_taxonomy_qiime)
 }
 
 
 run <- function() {
-   samples.to.keep <- sample_sums(HMP) >= 1000
-   HMP <<- prune_samples(samples.to.keep, HMP)
-   HMP <<- filter_taxa(HMP, function(x) sum(x >3) > (0.01*length(x)), TRUE)
+   p0 <<- read_csv2phyloseq(otu.file=otu.path, taxonomy.file=tree.path, metadata.file=map.path)
+   #samples.to.keep <- sample_sums(HMP) >= 1000
+   #HMP <<- prune_samples(samples.to.keep, HMP)
+   #HMP <<- filter_taxa(HMP, function(x) sum(x >3) > (0.01*length(x)), TRUE)
    #phy_tree(HMP) <- makeNodeLabel(phy_tree(HMP), method='number', prefix='n')
-   
+    
    #trans_output <<- philr(t(otu_table(HMP)), phy_tree(HMP), part.weights='enorm.x.gm.counts', ilr.weights='blw.sqrt', return.all=FALSE)
 }
 
@@ -76,7 +78,7 @@ output <- function(outputfile) {
   # This *needs* to change eventually.
   #print(HMP@sam_data)
   #pdf("helloworld.pdf")
-  plot_krona(HMP, outputfile, diffcol)
+  plot_krona(p0, outputfile, diffcol)
   #ggsave("helloworld.pdf", plot=last_plot(), device="pdf")
   #dev.off()
   
