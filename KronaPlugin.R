@@ -1,3 +1,7 @@
+
+dyn.load(paste("RPluMA", .Platform$dynlib.ext, sep=""))
+source("RPluMA.R")
+
 library(microbiome)
 #library(SpiecEasi)
 #library(ggplot2)
@@ -47,6 +51,10 @@ function (physeq, output, variable, trim = F)
 
 
 input <- function(inputfile) {
+  pfix = prefix()
+  if (length(pfix) != 0) {
+     pfix <- paste(pfix, "/", sep="")
+  }
   parameters <<- read.table(inputfile, as.is=T);
   rownames(parameters) <<- parameters[,1]; 
    # Need to get the three files
@@ -54,6 +62,15 @@ input <- function(inputfile) {
    tree.path <<- parameters["tree", 2]
    map.path <<- parameters["mapping", 2]
    diffcol <<- parameters["column", 2]
+  if (!(startsWith(otu.path, "/"))) {
+   otu.path <<- paste(pfix, otu.path, sep="")
+  }
+  if (!(startsWith(tree.path, "/"))) {
+   tree.path <<- paste(pfix, tree.path, sep="")
+  }
+  if (!(startsWith(map.path, "/"))) {
+   map.path <<- paste(pfix, map.path, sep="")
+  }
    print(otu.path)
    print(tree.path)
    print(map.path)
